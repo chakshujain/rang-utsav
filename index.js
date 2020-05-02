@@ -48,20 +48,26 @@ const upload = multer({ storage: storage });
 
 // End points
 app.get("/", (req, res) => {
-  res.status(200).render("home");
+  var params = { hey: "hello" };
+  var query = User.find({}, null);
+  query.exec(function(err, users_querry) {
+    if (err) res.send(err);
+    params["users"] = users_querry;
+    console.log("h2");
+    console.log(params["users"]);
+    res.status(200).render("home", params);
+  });
 });
+
 app.post("/create-user", (req, res) => {
   var user1 = new User({
-    username: "chks",
-    hash: "abcdef",
-    desc: "this is desc",
-    filepaths: {
-      "1": "abc/defe",
-    },
+    username: req.body.username,
+    hash: req.body.password,
+    desc: req.body.desc,
   });
   user1.save((err, user1) => {
     if (err) return console.error(err);
-    else res.status(200).send(`${user1.username} created successfully`);
+    else res.status(200).render("home");
   });
 });
 app.get("/upload", (req, res) => {

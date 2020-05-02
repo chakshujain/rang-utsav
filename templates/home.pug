@@ -5,5 +5,23 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
     body
-        form(action='/create-user' method='POST')
-            button.btn.btn.primary Create new user  
+        form(action='/create-user' method='post')
+            div.form-group
+                label(for='exampleInputEmail1') Username
+                input#exampleInputEmail1.form-control(type='text' aria-describedby='emailHelp' placeholder='Enter Username' name = 'username')
+                small#emailHelp.form-text.text-muted We&apos;ll never share your email with anyone else.
+            div.form-group
+                label(for='password') Password
+                input#password.form-control(type='password' placeholder='Password' name = 'password')
+            div.form-group
+                label(for='desc') Description
+                input#password.form-control(type='text' placeholder='Description' name = 'desc')
+            
+            button.btn.btn-primary(type='submit') Submit
+        
+        ul      
+            each i in users
+                li= i.username
+            else
+                li There are no values
+            
