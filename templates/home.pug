@@ -21,7 +21,9 @@ html(lang="en")
         
         ul      
             each i in users
-                li= i.username
+                form(name='view'+i.id action='/indiv-user' method='POST')
+                    input(type='hidden' name='individ' value=i.id)
+                    input(type='submit' name='view-btn' value= i.username class='btn btn-danger')
             else
                 li There are no values
             

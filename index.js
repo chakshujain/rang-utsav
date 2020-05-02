@@ -47,15 +47,27 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // End points
+
 app.get("/", (req, res) => {
-  var params = { hey: "hello" };
-  var query = User.find({}, null);
+  let params = { hey: "hello" };
+  let query = User.find({}, null);
   query.exec(function(err, users_querry) {
     if (err) res.send(err);
     params["users"] = users_querry;
     console.log("h2");
-    console.log(params["users"]);
     res.status(200).render("home", params);
+  });
+});
+
+app.post("/indiv-user", (req, res) => {
+  let params = {};
+  queryid = req.body.individ;
+  let query = User.findById(queryid);
+  query.exec(function(err, indiv_querry) {
+    if (err) res.send(err);
+    params["indivuser"] = indiv_querry;
+    console.log(params);
+    res.status(200).render("indiv-user", params);
   });
 });
 
@@ -67,16 +79,16 @@ app.post("/create-user", (req, res) => {
   });
   user1.save((err, user1) => {
     if (err) return console.error(err);
-    else res.status(200).render("home");
+    else res.status(200).redirect("/");
   });
 });
-app.get("/upload", (req, res) => {
-  res.status(200).render("index");
-});
+// app.get("/upload", (req, res) => {
+//   res.status(200).render("index");
+// });
 
 app.post("/upload", upload.array("file", 5), (req, res) => {
   //   console.log("storage location is ", req.hostname + "/" + req.file.path);
-  return res.send(req.file);
+  return res.status(200).send("Files Uploaded Successfully");
 });
 
 //Starting the server
