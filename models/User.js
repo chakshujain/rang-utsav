@@ -14,9 +14,18 @@ var UserSchema = new mongoose.Schema(
     },
     hash: String,
     desc: String,
-    filepaths: {
-      filename: String,
-    },
+    filedata: [
+      {
+        fieldname: String,
+        originalname: String,
+        encoding: String,
+        mimetype: String,
+        destination: String,
+        filename: String,
+        path: String,
+        size: Number,
+      },
+    ],
   },
   { timestamps: true }
 );

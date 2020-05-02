@@ -54,7 +54,6 @@ app.get("/", (req, res) => {
   query.exec(function(err, users_querry) {
     if (err) res.send(err);
     params["users"] = users_querry;
-    console.log("h2");
     res.status(200).render("home", params);
   });
 });
@@ -72,23 +71,35 @@ app.post("/indiv-user", (req, res) => {
 });
 
 app.post("/create-user", (req, res) => {
-  var user1 = new User({
+  var user = new User({
     username: req.body.username,
     hash: req.body.password,
     desc: req.body.desc,
+    filedata: [],
   });
-  user1.save((err, user1) => {
+  user.save((err, user) => {
     if (err) return console.error(err);
     else res.status(200).redirect("/");
   });
 });
-// app.get("/upload", (req, res) => {
-//   res.status(200).render("index");
-// });
 
 app.post("/upload", upload.array("file", 5), (req, res) => {
   //   console.log("storage location is ", req.hostname + "/" + req.file.path);
-  return res.status(200).send("Files Uploaded Successfully");
+  let query = User.findById(req.body.individ);
+
+  query.exec(function(err, file_upload_query) {
+    if (err) res.send(err);
+    req.files.forEach((file) => {
+      file_upload_query.filedata.push(file);
+      console.log("file pushed");
+    });
+    file_upload_query.save((err, qry) => {
+      if (err) console.error(err);
+      else console.log("Successfully saved to database");
+    });
+    return res.status(200).send("Files Uploaded Successfully");
+  });
+  console.log("aaa");
 });
 
 //Starting the server
