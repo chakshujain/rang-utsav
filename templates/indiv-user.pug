@@ -5,12 +5,16 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Document
     body
-        h1 #{hey}
-        ul      
-            li #{indivuser.username}
-            li #{indivuser.desc}
-            form#uploadForm(enctype='multipart/form-data' action='/upload' method='post')
-                input(type='hidden' name='individ' value=indivuser.id)
-                input(type='file' name='file' multiple='')
-                input(type='submit' value='Upload Image' name='submit')
+        h1 #{hey}     
+        li #{indivuser.username}
+        li #{indivuser.desc}
+        form#uploadForm(enctype='multipart/form-data' action='/upload' method='post')
+            input(type='hidden' name='individ' value=indivuser.id)
+            input(type='file' name='file' multiple='')
+            input(type='submit' value='Upload Image' name='submit')
+
+        if indivuser.filedata.length
+            h2 #{indivuser.filedata}
+        img(src= 'http://localhost:1111/uploads/file-1550484364038.png', alt="not available")    
+
             

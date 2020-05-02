@@ -3,7 +3,7 @@ const port = 1111;
 const app = express();
 const path = require("path");
 const multer = require("multer");
-const serveIndex = require("serve-index");
+// const serveIndex = require("serve-index");
 const mongoose = require("mongoose");
 const User = require("./models/User");
 
@@ -18,11 +18,14 @@ db.once("open", function() {
 });
 
 //For serving static files
-app.use(
-  "/ftp",
-  express.static("public"),
-  serveIndex("public", { icons: true })
-);
+
+// app.use(
+//   "/ftp",
+//   express.static("public"),
+//   serveIndex("public", { icons: true })
+// );
+
+app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false })); //important for fetching data from client side
 app.use(express.json());
 
@@ -65,7 +68,6 @@ app.post("/indiv-user", (req, res) => {
   query.exec(function(err, indiv_querry) {
     if (err) res.send(err);
     params["indivuser"] = indiv_querry;
-    console.log(params);
     res.status(200).render("indiv-user", params);
   });
 });
