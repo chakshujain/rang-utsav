@@ -18,14 +18,28 @@ handlers['/album'] = (req, res) => {
 };
 
 handlers['/images'] = (req, res) => {
-    var params = { images: [], hey: 'hello' };
+    var params = { images: [] };
     User.findOne({ username: 'a' }, function (err, queryRes) {
         queryRes.filedata.forEach((element) => {
             // console.log(element);
-            params['images'].push(element.path);
+            params['images'].push({
+                path: element.path,
+                className: element.className,
+            });
         });
-        res.status(OK).render('images', params);
+        // console.log(params);
+        res.status(OK).render('album', params);
     });
+};
+
+handlers['/submit'] = (req, res) => {
+    /* 
+        get request will contain   
+        filepath as key and its className (see the User.js scheme for className) as value
+
+        update the className for each request filepath
+        
+    */
 };
 
 module.exports = handlers;
