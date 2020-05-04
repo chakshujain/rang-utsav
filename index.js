@@ -110,3 +110,11 @@ app.post('/upload', upload.array('file', 5), (req, res) => {
 app.listen(port, () => {
     console.log(`Started server on port ${port}`);
 });
+
+const handlers = require('./handler');
+
+for (var urlPath in handlers) {
+    app.get(urlPath, function (req, res) {
+        handlers[urlPath](req, res);
+    });
+}
