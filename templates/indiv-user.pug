@@ -8,13 +8,19 @@ html(lang="en")
         h1 #{hey}     
         li #{indivuser.username}
         li #{indivuser.desc}
-        form#uploadForm(enctype='multipart/form-data' action='/upload' method='post')
-            input(type='hidden' name='individ' value=indivuser.id)
-            input(type='file' name='file' multiple='')
-            input(type='submit' value='Upload Image' name='submit')
-
+        li #{indivuser.isSuperUser}
+        if sessionid
+            form#uploadForm(enctype='multipart/form-data' action='/upload' method='post')
+                input(type='hidden' name='individ' value=indivuser.id)
+                input(type='file' name='file' multiple='')
+                input(type='submit' value='Upload Image' name='submit')
+        
+        if file_uploaded
+            p Files Uploaded Successfully
+        
         if indivuser.filedata.length
-            h2 #{indivuser.filedata}
-        img(src= 'http://localhost:1111/uploads/file-1550484364038.png', alt="not available")    
+            each i in indivuser.filedata
+                img(src= i.path, alt="not available")
+
 
             

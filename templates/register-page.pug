@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+    body
+        form(action='/create-user' method='post')
+            div.form-group
+                label(for='exampleInputEmail1') Username
+                input#exampleInputEmail1.form-control(type='text' aria-describedby='emailHelp' placeholder='Enter Username' name = 'username')
+                small#emailHelp.form-text.text-muted Make sure username you are entering is unique
+            div.form-group
+                label(for='password') Password
+                input#password.form-control(type='password' placeholder='Password' name = 'password')
+            div.form-group
+                label(for='desc') Description
+                input#password.form-control(type='text' placeholder='Description' name = 'desc')
+            div.form-group
+                input#super-user(type='checkbox' name='superuser' value='superuser')
+                label(for='superuser')  Make super user
+            
+            button.btn.btn-primary(type='submit') Submit
+        
+        ul      
+            each user in users
+                form(action='/indiv-user/' method='POST')
+                    input(type='hidden' name='individ' value=user.id)
+                    input(type='submit' name='view-btn' value= user.username class='btn btn-danger')
+            else
+                li There are no values
+            
