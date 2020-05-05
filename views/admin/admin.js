@@ -7,9 +7,11 @@ const baseUrl = '/admin/';
 const baseTemplatePath = 'admin/';
 
 router.get('/login', function (request, response) {
-    response.render(baseTemplatePath + 'login', {
-        pageTitle: 'Admin Login',
-    });
+    if (request.session.userId) response.redirect('/');
+    else
+        response.render(baseTemplatePath + 'login', {
+            pageTitle: 'Admin Login',
+        });
 });
 
 router.post('/login', function (req, res) {

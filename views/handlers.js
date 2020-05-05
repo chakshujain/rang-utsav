@@ -22,16 +22,16 @@ app.use('/admin', adminHandler);
 app.get('/', (req, res) => {
     res.redirect('/user');
 });
-
+// const User = require('./../models/User');
 // var userData = {
-//   username: "admin",
-//   password: "admin",
-//   desc: "adssad",
-//   filedata: [],
-//   isSuperUser: true,
+//     username: 'admin',
+//     password: 'admin',
+//     desc: 'adssad',
+//     filedata: [],
+//     isSuperUser: true,
 // };
-// User.create(userData, function(error, user) {});
+// User.create(userData, function (error, user) {});
 
-//Starting the server
+// Starting the server
 
 module.exports = app;

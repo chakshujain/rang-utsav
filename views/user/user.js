@@ -38,6 +38,7 @@ router.use('/', function (request, response, next) {
 router.get('/', (req, res) => {
     var params = { images: [], pageTitle: 'Album Images' };
     User.findById(req.session.userId, function (err, queryRes) {
+        if (queryRes == null) res.redirect(baseUrl);
         queryRes.filedata.forEach((element) => {
             // console.log(element);
             params['images'].push({
@@ -53,6 +54,7 @@ router.get('/', (req, res) => {
 
 router.post('/submit', (req, res) => {
     User.findById(req.session.userId, function (err, userObj) {
+        if (userObj == null) res.redirect(baseUrl);
         userObj.filedata.forEach(function (element) {
             if (req.body[element.filename]) {
                 element.className = 'selected';
