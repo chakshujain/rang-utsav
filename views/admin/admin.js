@@ -7,7 +7,9 @@ const baseUrl = '/admin/';
 const baseTemplatePath = 'admin/';
 
 router.get('/login', function (request, response) {
-    response.render(baseTemplatePath + 'login');
+    response.render(baseTemplatePath + 'login', {
+        pageTitle: 'Admin Login',
+    });
 });
 
 router.post('/login', function (req, res) {
@@ -46,6 +48,7 @@ router.use(function (request, response, next) {
 
 router.get('/', function (request, response) {
     let params = {};
+    params['pageTitle'] = 'Welcome';
     let query = User.find({}, null);
     query.exec(function (err, users_querry) {
         if (err) response.send(err);
@@ -80,7 +83,10 @@ router.get('/manage', function (req, res) {
     var userName = req.query.user;
     User.findOne({ username: userName }, function (err, qRes) {
         if (qRes != null) {
-            res.render(baseTemplatePath + 'manage');
+            res.render(baseTemplatePath + 'manage', {
+                username: userName,
+                pageTitle: 'Manage Users',
+            });
         }
     });
 });
@@ -91,14 +97,14 @@ router.get('/logout', function (req, res, next) {
             if (err) {
                 return next(err);
             } else {
-                return res.redirect('/login');
+                return res.redirect('/');
             }
         });
     }
 });
 
 router.post('/upload', upload.array('file', 100), function (req, res) {
-    let query = User.findById(req.body.individ);
+    let query = User.findOne({ username: req.body.individ });
     file_uploaded = false;
     query.exec(function (err, file_upload_query) {
         if (err) res.send(err);

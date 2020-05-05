@@ -8,7 +8,7 @@ app.use('/user', userHandler);
 app.use('/admin', adminHandler);
 
 app.get('/', (req, res) => {
-    res.status(200).render('index');
+    res.redirect('/user');
 });
 
 // var userData = {

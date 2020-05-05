@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        include ./head.pug
+    body
+    include ./header.pug
+    main#main-container.container
+        .info.shadow
+            h1#count
+        #media-container.container
+    #bottom-container.container.shadow-r
+        a#bottom-btn.btn.shadow.btn-wide(href='# ') Submit
+    script(src="/public/js/script.js")
+    script
+        | var images = []; 
+        each i in images
+            | images.push(['#{i.path}', '#{i.className}']);
+        | start();
