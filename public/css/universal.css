@@ -14,13 +14,18 @@
     box-shadow: -7px -7px 20px 2px rgba(175, 175, 175, 0.4);
 }
 
-.container {
+.m-container,
+#main-container {
     width: 100%;
     background: #fff;
     padding: 1em;
 }
 
 a {
+    text-decoration: none;
+}
+
+a:hover {
     text-decoration: none;
 }
 
