@@ -39,6 +39,34 @@ function toggleClass(ele, className, callback) {
     callback(1);
 }
 
+function serialize(obj) {
+    var str = [];
+    for (var p in obj)
+        if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+        }
+    return str.join('&');
+}
+
+function post(path, data = {}) {
+    var xHttp = new XMLHttpRequest();
+    xHttp.onreadystatechange = function (ev) {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                alert('Done');
+            } else {
+                alert('Somthing Went Wrong!');
+            }
+        }
+    };
+    xHttp.onerror = () => {
+        alert('Something went wrong');
+    };
+    xHttp.open('POST', path, true);
+    xHttp.send('hello=h');
+    console.log(serialize(data));
+}
+
 function start() {
     state['count'] = 0;
     state['max-count'] = 0;
@@ -47,11 +75,14 @@ function start() {
 
     images.forEach(function (element) {
         var media = createElement('div', { className: 'media shadow ' });
-        toggleClass(media, element[1], function (c) {
+        toggleClass(media, element.className, function (c) {
             state['count'] += c;
             updateCount();
         });
-        var img = createElement('img', { src: '/' + element[0] });
+        var img = createElement('img', {
+            src: '/' + element.path,
+            name: element.name,
+        });
         media.addEventListener('click', function (ev) {
             toggleClass(media, 'selected', function (c) {
                 state['count'] += c;
@@ -62,4 +93,22 @@ function start() {
         mainContainer.append(media);
         console.log(images);
     });
+
+    var submitBtn = document.getElementById('bottom-btn');
+
+    submitBtn.onclick = function (ev) {
+        ev.preventDefault();
+        var ele = document.getElementsByClassName('selected');
+        var data = {};
+        for (var i = 0; i < ele.length; i++) {
+            data[ele[i].querySelector('img').name] = 'selected';
+        }
+        $.post('/user/submit', jQuery.param(data))
+            .done(function () {
+                alert('Done');
+            })
+            .fail(function () {
+                alert('Something went wrong');
+            });
+    };
 }

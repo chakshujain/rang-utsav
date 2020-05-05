@@ -81,26 +81,22 @@ router.post('/new-user', function (req, res) {
 
 router.get('/manage', function (req, res) {
     var userName = req.query.user;
-    User.findOne({ username: userName }, function (err, qRes) {
-        if (qRes != null) {
-            res.render(baseTemplatePath + 'manage', {
-                username: userName,
-                pageTitle: 'Manage Users',
+    var params = { images: [], pageTitle: 'Album Images' };
+    params.username = userName;
+    params.pageTitle = 'Manage Users';
+    User.findOne({ username: userName }, function (err, queryRes) {
+        queryRes.filedata.forEach((element) => {
+            params['images'].push({
+                path: element.path,
+                className: element.className,
+                name: element.filename,
             });
+        });
+
+        if (queryRes != null) {
+            res.status(200).render(baseTemplatePath + 'manage', params);
         }
     });
-});
-
-router.get('/logout', function (req, res, next) {
-    if (req.session) {
-        req.session.destroy(function (err) {
-            if (err) {
-                return next(err);
-            } else {
-                return res.redirect('/');
-            }
-        });
-    }
 });
 
 router.post('/upload', upload.array('file', 100), function (req, res) {

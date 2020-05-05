@@ -4,15 +4,19 @@ html
         include ./../head.pug
     body
     include ./../header.pug
-    main#main-container.container
+    main#main-container.m-container
         .info.shadow
             h1#count
-        #media-container.container
-    #bottom-container.container.shadow-r
-        a#bottom-btn.btn.shadow.btn-wide(href='# ') Submit
+        #media-container.m-container
+    #bottom-container.m-container.shadow-r
+        a#bottom-btn.m-btn.shadow.m-btn-wide(href='# ') Submit
+    script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous')
     script(src="/public/js/script.js")
     script
         | var images = []; 
-        each i in images
-            | images.push(['#{i.path}', '#{i.className}']);
+        each image in images
+            | var imgObj = {};
+            each val, key in image 
+                | imgObj['#{key}'] = '#{val}';
+            | images.push(imgObj);
         | start();

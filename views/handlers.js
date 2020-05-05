@@ -4,6 +4,18 @@ var app = express.Router();
 const userHandler = require('./user/user');
 const adminHandler = require('./admin/admin');
 
+app.get('/logout', function (req, res, next) {
+    if (req.session) {
+        req.session.destroy(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.redirect('/');
+            }
+        });
+    }
+});
+
 app.use('/user', userHandler);
 app.use('/admin', adminHandler);
 

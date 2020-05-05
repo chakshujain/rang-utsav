@@ -30,7 +30,6 @@ router.post('/login', function (req, res) {
 });
 
 router.use('/', function (request, response, next) {
-    console.log(request.session.userId);
     if (!request.session.userId) {
         response.redirect(baseUrl + 'login');
     } else next();
@@ -44,10 +43,28 @@ router.get('/', (req, res) => {
             params['images'].push({
                 path: element.path,
                 className: element.className,
+                name: element.filename,
             });
         });
         // console.log(params);
         res.status(200).render(baseTemplatePath + 'index', params);
+    });
+});
+
+router.post('/submit', (req, res) => {
+    User.findById(req.session.userId, function (err, userObj) {
+        userObj.filedata.forEach(function (element) {
+            if (req.body[element.filename]) {
+                element.className = 'selected';
+                console.log(element.className);
+            } else {
+                element.className = '';
+            }
+        });
+        userObj.save(function (err) {
+            console.log('err', err);
+        });
+        res.status(200).send('done');
     });
 });
 
