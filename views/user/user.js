@@ -5,39 +5,39 @@ const User = require("./../../models/User");
 const baseUrl = "/user/";
 const baseTemplatePath = "user/";
 
-router.get("/login", function(request, response) {
-  response.render(baseTemplatePath + "login", {
-    pageTitle: "User Login",
-  });
-});
+// router.get("/login", function(request, response) {
+//   response.render(baseTemplatePath + "login", {
+//     pageTitle: "User Login",
+//   });
+// });
 
-router.post("/login", function(req, res) {
-  if (req.body.logusername && req.body.logpassword) {
-    User.authenticate(req.body.logusername, req.body.logpassword, function(
-      error,
-      user
-    ) {
-      if (error || !user) {
-        res.render(baseTemplatePath + "login", {
-          pageTitle: "User Login",
-          errorMsg: "Invalid username or password",
-        });
-      } else {
-        req.session.userId = user._id;
-        res.redirect(baseUrl);
-      }
-    });
-  } else {
-    res.render("login", {
-      pageTitle: "User Login",
-      errorMsg: "Invalid username or password",
-    });
-  }
-});
+// router.post("/login", function(req, res) {
+//   if (req.body.logusername && req.body.logpassword) {
+//     User.authenticate(req.body.logusername, req.body.logpassword, function(
+//       error,
+//       user
+//     ) {
+//       if (error || !user) {
+//         res.render(baseTemplatePath + "login", {
+//           pageTitle: "User Login",
+//           errorMsg: "Invalid username or password",
+//         });
+//       } else {
+//         req.session.userId = user._id;
+//         res.redirect(baseUrl);
+//       }
+//     });
+//   } else {
+//     res.render("login", {
+//       pageTitle: "User Login",
+//       errorMsg: "Invalid username or password",
+//     });
+//   }
+// });
 
 router.use("/", function(request, response, next) {
   if (!request.session.userId) {
-    response.redirect(baseUrl + "login");
+    response.redirect("/login");
   } else next();
 });
 

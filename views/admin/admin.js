@@ -6,37 +6,37 @@ const upload = require("../util/upload");
 const baseUrl = "/admin/";
 const baseTemplatePath = "admin/";
 
-router.get("/login", function(request, response) {
-  if (request.session.userId) response.redirect("/");
-  else
-    response.render(baseTemplatePath + "login", {
-      pageTitle: "Admin Login",
-    });
-});
+// router.get("/login", function(request, response) {
+//   if (request.session.userId) response.redirect("/");
+//   else
+//     response.render(baseTemplatePath + "login", {
+//       pageTitle: "Admin Login",
+//     });
+// });
 
-router.post("/login", function(req, res) {
-  if (req.body.logusername && req.body.logpassword) {
-    User.authenticate(req.body.logusername, req.body.logpassword, function(
-      error,
-      user
-    ) {
-      if (error || !user) {
-        res.render(baseTemplatePath + "login", {
-          pageTitle: "Admin Login",
-          errorMsg: "Invalid username or password",
-        });
-      } else {
-        req.session.userId = user._id;
-        res.redirect(baseUrl);
-      }
-    });
-  } else {
-    res.render(baseTemplatePath + "login", {
-      pageTitle: "Admin Login",
-      errorMsg: "Your password or username may be wrong",
-    });
-  }
-});
+// router.post("/login", function(req, res) {
+//   if (req.body.logusername && req.body.logpassword) {
+//     User.authenticate(req.body.logusername, req.body.logpassword, function(
+//       error,
+//       user
+//     ) {
+//       if (error || !user) {
+//         res.render(baseTemplatePath + "login", {
+//           pageTitle: "Admin Login",
+//           errorMsg: "Invalid username or password",
+//         });
+//       } else {
+//         req.session.userId = user._id;
+//         res.redirect(baseUrl);
+//       }
+//     });
+//   } else {
+//     res.render(baseTemplatePath + "login", {
+//       pageTitle: "Admin Login",
+//       errorMsg: "Your password or username may be wrong",
+//     });
+//   }
+// });
 
 /* 
     Middleware for checking wether user is authenticated for 
@@ -44,12 +44,19 @@ router.post("/login", function(req, res) {
 */
 router.use(function(request, response, next) {
   if (!request.session.userId) {
-    response.redirect(baseUrl + "login");
+    response.redirect("/login");
   } else {
     var q = User.findById(request.session.userId);
     q.exec(function(err, res) {
-      if (err || !res.isSuperUser) response.redirect(baseUrl + "login");
-      else next();
+      if (err) {
+        response.redirect("/login");
+      } else if (res.isSuperUser) {
+        next();
+      } else if (res) {
+        response.redirect("/user");
+      }
+      // if (err || !res.isSuperUser) response.redirect(baseUrl + "login");
+      // else next();
     });
   }
 });
